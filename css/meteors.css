@@ -1,0 +1,177 @@
+/* 流星轨迹效果 */
+.meteor-trails {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.meteor-trail {
+    position: absolute;
+    pointer-events: none;
+}
+
+.meteor {
+    position: absolute;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.8), 
+        rgba(255, 159, 220, 0.6),
+        transparent);
+    border-radius: 1px;
+    animation: meteor-fly 3s linear infinite;
+    opacity: 0;
+}
+
+.meteor::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -1px;
+    width: 6px;
+    height: 4px;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 159, 220, 0.8) 50%, 
+        transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes meteor-fly {
+    0% {
+        opacity: 0;
+        transform: translateX(-200px) translateY(200px);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100vw) translateY(-200px);
+    }
+}
+
+/* 流星轨迹路径 */
+.meteor-trail-1 { transform: rotate(-30deg); }
+.meteor-trail-2 { transform: rotate(-45deg); }
+.meteor-trail-3 { transform: rotate(-60deg); }
+.meteor-trail-4 { transform: rotate(-20deg); }
+.meteor-trail-5 { transform: rotate(-50deg); }
+.meteor-trail-6 { transform: rotate(-40deg); }
+
+/* 流星延迟动画 */
+.meteor-trail-1 .meteor { animation-delay: 0s; }
+.meteor-trail-2 .meteor { animation-delay: 0.5s; }
+.meteor-trail-3 .meteor { animation-delay: 1s; }
+.meteor-trail-4 .meteor { animation-delay: 1.5s; }
+.meteor-trail-5 .meteor { animation-delay: 2s; }
+.meteor-trail-6 .meteor { animation-delay: 2.5s; }
+
+/* 卡片出现时的流星效果 */
+.hardware-card {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: meteor-card-enter 0.8s ease forwards;
+}
+
+.hardware-card:nth-child(1) { animation-delay: 0.1s; }
+.hardware-card:nth-child(2) { animation-delay: 0.2s; }
+.hardware-card:nth-child(3) { animation-delay: 0.3s; }
+.hardware-card:nth-child(4) { animation-delay: 0.4s; }
+.hardware-card:nth-child(5) { animation-delay: 0.5s; }
+.hardware-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes meteor-card-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 流星尾迹粒子 */
+.meteor-particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-trail 1s linear forwards;
+}
+
+@keyframes particle-trail {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translateY(20px);
+    }
+}
+
+/* 星座连线效果 */
+.constellation-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    pointer-events: none;
+    opacity: 0;
+    animation: constellation-appear 2s ease-in-out infinite;
+}
+
+@keyframes constellation-appear {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.5; }
+}
+
+/* 响应式流星效果 */
+@media (max-width: 768px) {
+    .meteor {
+        width: 100px;
+        height: 1px;
+    }
+    
+    .meteor::before {
+        width: 4px;
+        height: 3px;
+    }
+    
+    .meteor-trails {
+        opacity: 0.7;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .meteor,
+    .meteor-particle,
+    .constellation-line {
+        animation: none;
+        opacity: 0.3;
+    }
+    
+    .hardware-card {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
