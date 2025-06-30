@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 可爱硬件监控</title>
+    <meta name="description" content="一个可爱的粉色主题硬件监控网站，具有星星墙分布效果">
+    <meta name="keywords" content="硬件监控,温度监控,系统监控,粉色主题,可爱设计">
+    <meta name="author" content="ectura">
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Google 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+</head>
+<body>
+    <!-- 背景星星效果容器 -->
+    <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+    
+    <!-- 背景装饰图案 -->
+    <div class="background-decoration" aria-hidden="true">
+        <div class="decoration-element decoration-1"></div>
+        <div class="decoration-element decoration-2"></div>
+        <div class="decoration-element decoration-3"></div>
+    </div>
+    
+    <!-- 主标题区域 -->
+    <header class="main-header">
+        <div class="header-content">
+            <h1 class="main-title">
+                <span class="title-icon">🌸</span>
+                <span class="title-text">可爱硬件监控</span>
+                <span class="title-icon">🌸</span>
+            </h1>
+            <p class="subtitle">实时监控您的电脑硬件状态</p>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">⚡</span>
+                    <span class="stat-text">实时监控</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🎨</span>
+                    <span class="stat-text">可爱主题</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">📱</span>
+                    <span class="stat-text">响应式设计</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 硬件卡片容器 -->
+    <main class="hardware-container" id="hardwareContainer" role="main">
+        <!-- 硬件卡片将由 JavaScript 动态生成 -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-icon">🌸</div>
+            <p>正在加载硬件信息...</p>
+        </div>
+    </main>
+
+    <!-- 右上角状态指示器 -->
+    <div class="status-indicator" id="statusIndicator" role="status" aria-live="polite">
+        <div class="status-dot" aria-hidden="true"></div>
+        <span class="status-text">初始化中...</span>
+        <div class="status-details">
+            <span class="update-time" id="updateTime"></span>
+        </div>
+    </div>
+
+    <!-- 左下角温度图例 -->
+    <aside class="temperature-legend" role="complementary">
+        <h3 class="legend-title">
+            <span class="legend-icon">🌡️</span>
+            温度指示
+        </h3>
+        <div class="legend-items">
+            <div class="legend-item">
+                <div class="legend-color normal" aria-hidden="true"></div>
+                <span class="legend-text">正常 (&lt;50°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color warning" aria-hidden="true"></div>
+                <span class="legend-text">注意 (50-70°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color danger" aria-hidden="true"></div>
+                <span class="legend-text">警告 (70-85°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color critical" aria-hidden="true"></div>
+                <span class="legend-text">危险 (&gt;85°C)</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 底部信息栏 -->
+    <footer class="footer-info">
+        <div class="footer-content">
+            <p class="footer-text">
+                <span class="footer-icon">💖</span>
+                Made with Love by 
+                <a href="https://github.com/ectura" target="_blank" rel="noopener noreferrer" class="footer-link">ectura</a>
+            </p>
+            <div class="footer-stats">
+                <span class="footer-stat">
+                    <span class="stat-icon">🔄</span>
+                    <span class="stat-value" id="updateCount">0</span>
+                    <span class="stat-label">次更新</span>
+                </span>
+                <span class="footer-stat">
+                    <span class="stat-icon">⏱️</span>
+                    <span class="stat-value" id="uptime">00:00:00</span>
+                    <span class="stat-label">运行时间</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 设置面板 (隐藏) -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3>⚙️ 设置</h3>
+            <button class="settings-close" id="settingsClose" aria-label="关闭设置">✕</button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-item">
+                <label for="updateInterval">更新间隔 (秒)</label>
+                <input type="range" id="updateInterval" min="1" max="10" value="2" class="setting-slider">
+                <span class="setting-value">2</span>
+            </div>
+            <div class="setting-item">
+                <label for="animationSpeed">动画速度</label>
+                <select id="animationSpeed" class="setting-select">
+                    <option value="slow">慢速</option>
+                    <option value="normal" selected>正常</option>
+                    <option value="fast">快速</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="showStars" checked class="setting-checkbox">
+                    显示背景星星
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置按钮 -->
+    <button class="settings-button" id="settingsButton" aria-label="打开设置" title="设置">
+        ⚙️
+    </button>
+
+    <!-- JavaScript 文件 -->
+    <script src="js/hardware-simulator.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- 页面加载完成提示 -->
+    <script>
+        window.addEventListener('load', () => {
+            console.log('🌸 可爱硬件监控已加载完成！');
+            console.log('💖 GitHub: https://github.com/ectura/cute-hardware-monitor');
+        });
+    </script>
+</body>
+</html>
